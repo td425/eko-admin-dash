@@ -581,11 +581,18 @@ const baseDataProvider: SynapseDataProvider = {
 
     if (res.update) {
       const upd = res.update(params);
-      const options: { method: string; body?: string } = { method: upd.method };
-      if (upd.method !== "GET" && "body" in upd) {
-        options.body = JSON.stringify(upd.body, filterNullValues);
+      // Async resources (e.g. MAS users) opt into a Promise-returning update that handles
+      // its own dispatch and returns the final record; sync resources return {endpoint, method}.
+      if (upd && typeof (upd as Promise<unknown>).then === "function") {
+        const data = await (upd as Promise<RaRecord>);
+        return { data };
       }
-      const { json } = await jsonClient(baseUrl + upd.endpoint, options);
+      const sync = upd as { endpoint: string; method: string; body?: unknown };
+      const options: { method: string; body?: string } = { method: sync.method };
+      if (sync.method !== "GET" && "body" in sync) {
+        options.body = JSON.stringify(sync.body, filterNullValues);
+      }
+      const { json } = await jsonClient(baseUrl + sync.endpoint, options);
       return { data: res.map(json) };
     }
 

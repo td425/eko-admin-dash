@@ -37,9 +37,11 @@ export const wrapWithLifecycle = (base: SynapseDataProvider): SynapseDataProvide
     {
       resource: "users",
       beforeUpdate: async (params: UpdateParams<any>, dataProvider: DataProvider) => {
-        // In MAS mode: dispatch MAS auth-field changes and skip Synapse-only logic
-        if (isMAS()) {
-          const masId = params.previousData.mas_id as string;
+        // In MAS mode: dispatch MAS auth-field changes and skip Synapse-only logic.
+        // When the user has no MAS account (Synapse-only — typically appservice/bot users),
+        // mas_id is undefined and we fall through to the Synapse-only branch below.
+        const masId = params.previousData.mas_id as string | undefined;
+        if (isMAS() && masId) {
           const prev = params.previousData;
           const next = params.data;
 

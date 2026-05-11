@@ -397,11 +397,61 @@ export const getMASUsersAsMainResource = () => ({
     const homeserver = localStorage.getItem("home_server") || "";
     return { ...mapMASUserItem(item.data, homeserver), id: `@${item.data.attributes.username}:${homeserver}` };
   },
-  // Re-fetch after beforeUpdate has dispatched MAS action calls
-  update: (params: UpdateParams) => ({
-    endpoint: `/api/admin/v1/users/${params.previousData.mas_id}`,
-    method: "GET",
-  }),
+  // After beforeUpdate has dispatched MAS action calls, re-fetch and return the merged record.
+  // For Synapse-only users (no mas_id), PUT the diffed admin/locked/deactivated/profile fields
+  // through Synapse v2 first, then return the Synapse-only record from getOne.
+  update: async (params: UpdateParams) => {
+    const masBaseUrl = getMASBaseUrl();
+    const synapseBaseUrl = localStorage.getItem("base_url") || "";
+    const homeserver = localStorage.getItem("home_server") || "";
+    const masId = params.previousData.mas_id as string | undefined;
+    const id = String(params.id);
+    const factory = getMASUsersAsMainResource();
+
+    if (masId && masBaseUrl) {
+      const { json } = await jsonClient(`${masBaseUrl}/api/admin/v1/users/${masId}`);
+      const item: MASUserResource = (json?.data ?? json) as MASUserResource;
+      const masRecord = { ...mapMASUserItem(item, homeserver), id };
+      try {
+        const { json: synapseJson } = await jsonClient(
+          `${synapseBaseUrl}/_synapse/admin/v2/users/${encodeURIComponent(id)}`
+        );
+        return {
+          ...masRecord,
+          avatar_src: synapseJson.avatar_url ?? null,
+          displayname: synapseJson.displayname ?? null,
+          user_type: synapseJson.user_type ?? null,
+          appservice_id: synapseJson.appservice_id ?? null,
+          creation_ts_ms: normalizeTS(synapseJson.creation_ts),
+          suspended: !!synapseJson.suspended,
+          shadow_banned: !!synapseJson.shadow_banned,
+        };
+      } catch {
+        return masRecord;
+      }
+    }
+
+    // Synapse-only user in MAS mode — admin/locked/deactivated routed through Synapse v2.
+    const body: Record<string, unknown> = {};
+    const data = params.data as Record<string, unknown>;
+    const prev = params.previousData as Record<string, unknown>;
+    if (data.admin !== undefined && data.admin !== prev.admin) body.admin = !!data.admin;
+    if (data.locked !== undefined && data.locked !== prev.locked) body.locked = !!data.locked;
+    if (data.deactivated !== undefined && data.deactivated !== prev.deactivated) body.deactivated = !!data.deactivated;
+    if (data.displayname !== undefined && data.displayname !== prev.displayname)
+      body.displayname = data.displayname ?? "";
+    if (data.avatar_src !== undefined && data.avatar_src !== prev.avatar_src) body.avatar_url = data.avatar_src ?? "";
+    if (data.user_type !== undefined && data.user_type !== prev.user_type) body.user_type = data.user_type;
+
+    if (Object.keys(body).length > 0) {
+      await jsonClient(`${synapseBaseUrl}/_synapse/admin/v2/users/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        body: JSON.stringify(body),
+      });
+    }
+
+    return factory.getOne({ id });
+  },
 });
 
 export const getMASUserEmailsResource = () => ({

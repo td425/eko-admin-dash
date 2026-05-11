@@ -200,7 +200,9 @@ const UserBulkActionButtons = () => {
   const [ownUserIsSelected, setOwnUserIsSelected] = useState(false);
   const [systemUserIsSelected, setSystemUserIsSelected] = useState(false);
   const selectedIds = record.selectedIds;
-  const masIdMap = Object.fromEntries((record.data || []).map(r => [String(r.id), String(r.mas_id || r.id)]));
+  const masIdMap = Object.fromEntries(
+    (record.data || []).map(r => [String(r.id), r.mas_id ? String(r.mas_id) : undefined])
+  ) as Record<string, string | undefined>;
   const ownUserId = localStorage.getItem("user_id");
 
   useEffect(() => {

@@ -30,13 +30,15 @@ import {
 
 import { SynapseDataProvider } from "../../../providers/types";
 import { isMAS } from "../../../providers/data/mas";
+import { jsonClient } from "../../../providers/http";
 
 interface DeleteUserButtonProps {
   selectedIds: Identifier[];
   confirmTitle: string;
   confirmContent: string;
-  /** MXID → mas_id mapping; required for MAS bulk deactivation. Callers must resolve this from their own context. */
-  masIdMap?: Record<string, string>;
+  /** MXID → mas_id mapping; required for MAS bulk deactivation. Entries are undefined for
+   * Synapse-only users (no MAS account), which are routed through the Synapse v2 deactivate path. */
+  masIdMap?: Record<string, string | undefined>;
 }
 
 const resourceName = "users";
@@ -75,11 +77,21 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = props => {
 
   const performMASDeactivate = async () => {
     try {
-      const masIds = recordIds.map(id => {
-        const masId = props.masIdMap?.[String(id)];
-        return masId ?? String(id);
-      });
-      await Promise.all(masIds.map(masId => dataProvider.masDeactivateUser(masId, false)));
+      const baseUrl = localStorage.getItem("base_url") || "";
+      await Promise.all(
+        recordIds.map(async id => {
+          const masId = props.masIdMap?.[String(id)];
+          if (masId) {
+            await dataProvider.masDeactivateUser(masId, false);
+            return;
+          }
+          // Synapse-only user in MAS mode — soft-deactivate via Synapse v2.
+          await jsonClient(`${baseUrl}/_synapse/admin/v2/users/${encodeURIComponent(String(id))}`, {
+            method: "PUT",
+            body: JSON.stringify({ deactivated: true }),
+          });
+        })
+      );
       notify("ra.notification.deleted", {
         messageArgs: { smart_count: recordIds.length },
         type: "info" as NotificationType,
