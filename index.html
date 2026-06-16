@@ -1,0 +1,25 @@
+<!doctype html>
+<!--
+  This root index.html exists so that platform build systems that expect a
+  conventional Vite project structure (e.g. Hostinger's "Web Apps" framework
+  detection) recognize Ketesa as a Vite app.
+
+  The real, production entrypoints live in src/entrypoints/ and are wired up
+  explicitly via build.rolldownOptions.input in vite.config.ts, so the actual
+  `npm run build` does NOT use this file — it is ignored during the real build.
+  It only needs to be a valid Vite entry that loads the app.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Ketesa" />
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <title>Ketesa</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
