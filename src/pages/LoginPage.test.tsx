@@ -33,7 +33,7 @@ vi.mock("../providers/data/synapse", async importOriginal => {
 });
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, "en", [{ locale: "en", name: "English" }]);
-const welcomeText = englishMessages.ketesa.auth.welcome.replace("%{name}", "Ketesa");
+const welcomeText = "Command Center";
 const auth = englishMessages.ketesa.auth;
 const signIn = englishMessages.ra.auth.sign_in;
 

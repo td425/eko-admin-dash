@@ -93,7 +93,7 @@ const sharedComponents: ThemeOptions["components"] = {
   MuiButtonBase: {
     styleOverrides: {
       root: ({ theme }) =>
-        focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.35)" : "rgba(91, 141, 239, 0.4)"),
+        focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.35)" : "rgba(91, 141, 239, 0.4)"),
     },
   },
   MuiButton: {
@@ -141,14 +141,14 @@ const sharedComponents: ThemeOptions["components"] = {
       root: ({ theme }) => ({
         borderRadius: 4,
         transition: "border-color 150ms ease, box-shadow 150ms ease",
-        ...focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.3)" : "rgba(91, 141, 239, 0.3)"),
+        ...focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.3)" : "rgba(91, 141, 239, 0.3)"),
       }),
     },
   },
   MuiFilledInput: {
     styleOverrides: {
       root: ({ theme }) =>
-        focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.3)" : "rgba(91, 141, 239, 0.3)"),
+        focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.3)" : "rgba(91, 141, 239, 0.3)"),
     },
   },
   MuiChip: {
@@ -156,7 +156,7 @@ const sharedComponents: ThemeOptions["components"] = {
       root: ({ theme }) => ({
         borderRadius: 4,
         transition: "background-color 150ms ease, box-shadow 150ms ease",
-        ...focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.35)" : "rgba(91, 141, 239, 0.4)"),
+        ...focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.35)" : "rgba(91, 141, 239, 0.4)"),
       }),
     },
   },
@@ -164,7 +164,7 @@ const sharedComponents: ThemeOptions["components"] = {
     styleOverrides: {
       root: ({ theme }) => ({
         borderRadius: 2,
-        ...focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.35)" : "rgba(91, 141, 239, 0.4)"),
+        ...focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.35)" : "rgba(91, 141, 239, 0.4)"),
       }),
     },
   },
@@ -343,17 +343,46 @@ const darkComponents: ThemeOptions["components"] = {
     styleOverrides: {
       root: {
         borderRadius: 8,
-        boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
-        border: "none",
         backgroundImage: "none",
+        border: "1px solid rgba(255, 122, 26, 0.22)",
+        boxShadow:
+          "0 0 0 1px rgba(255,122,26,0.04), 0 10px 32px rgba(0,0,0,0.5), inset 0 0 28px rgba(255,122,26,0.035)",
+        position: "relative",
+        // HUD corner brackets (top-left + bottom-right)
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: -1,
+          left: -1,
+          width: 16,
+          height: 16,
+          borderTop: "2px solid rgba(255,122,26,0.75)",
+          borderLeft: "2px solid rgba(255,122,26,0.75)",
+          borderTopLeftRadius: 8,
+          pointerEvents: "none",
+        },
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          bottom: -1,
+          right: -1,
+          width: 16,
+          height: 16,
+          borderBottom: "2px solid rgba(255,122,26,0.75)",
+          borderRight: "2px solid rgba(255,122,26,0.75)",
+          borderBottomRightRadius: 8,
+          pointerEvents: "none",
+        },
       },
     },
   },
   MuiAppBar: {
     styleOverrides: {
       root: {
-        boxShadow: "none",
-        borderBottom: "1px solid #253038",
+        boxShadow: "0 2px 24px rgba(255,122,26,0.10)",
+        borderBottom: "1px solid rgba(255,122,26,0.28)",
+        backgroundColor: "#0b1117",
+        backgroundImage: "linear-gradient(90deg, rgba(10,16,22,0.97) 0%, rgba(17,24,33,0.97) 100%)",
       },
     },
   },
@@ -361,6 +390,20 @@ const darkComponents: ThemeOptions["components"] = {
     styleOverrides: {
       root: {
         backgroundImage: "none",
+      },
+    },
+  },
+  MuiTableHead: {
+    styleOverrides: {
+      root: {
+        "& .MuiTableCell-head": {
+          fontWeight: 600,
+          color: "#FFB877",
+          letterSpacing: "0.05em",
+          textTransform: "uppercase",
+          fontSize: "0.76rem",
+          borderBottom: "1px solid rgba(255,122,26,0.3)",
+        },
       },
     },
   },
@@ -381,6 +424,8 @@ const darkComponents: ThemeOptions["components"] = {
         "& .MuiPaper-root": {
           backgroundColor: "#080D12 !important",
           color: "#E0E0E0",
+          borderRight: "1px solid rgba(255,122,26,0.16)",
+          boxShadow: "inset -1px 0 16px rgba(255,122,26,0.05)",
         },
       },
     },
@@ -411,7 +456,7 @@ export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     contrastThreshold: 4.5,
-    primary: { main: "#F49300" },
+    primary: { main: "#FF7A1A" },
     secondary: { main: "#5B8DAF" },
     error: { main: "#FF6B7A" },
     warning: { main: "#FBBF24" },

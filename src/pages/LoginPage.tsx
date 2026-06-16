@@ -1,16 +1,14 @@
+import FingerprintIcon from "@mui/icons-material/Fingerprint";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import QrCode2Icon from "@mui/icons-material/QrCode2";
+import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
+import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import TranslateIcon from "@mui/icons-material/Translate";
-import { Avatar, Box, Card, CircularProgress, MenuItem, Select } from "@mui/material";
+import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
+import { Box, Card, CircularProgress, MenuItem, Select } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import {
-  Form,
-  FormDataConsumer,
-  Notification,
-  useLogin,
-  useNotify,
-  useLocaleState,
-  useTranslate,
-  useLocales,
-} from "react-admin";
+import { Form, FormDataConsumer, Notification, useLogin, useNotify, useLocaleState, useLocales } from "react-admin";
 
 import { useAppContext } from "../Context";
 import { EtkeAttribution } from "../components/etke.cc/EtkeAttribution";
@@ -18,8 +16,10 @@ import { useInstanceConfig } from "../components/etke.cc/InstanceConfig";
 import { Footer, LoginFormBox } from "../components/layout";
 import { LoginButtons } from "../components/login/LoginButtons";
 import { LoginFormSections } from "../components/login/LoginFormSections";
+import MatrixRain from "../components/login/MatrixRain";
 import { LoginMethod } from "../components/login/types";
 import { useLoginProbe } from "../components/login/useLoginProbe";
+import { darkTheme } from "../assets/theme";
 import createLogger from "../utils/logger";
 
 const log = createLogger("login");
@@ -88,7 +88,6 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [locale, setLocale] = useLocaleState();
   const locales = useLocales();
-  const translate = useTranslate();
   const [loginMethod, setLoginMethod] = useState<LoginMethod>("credentials");
   const loginToken = new URLSearchParams(window.location.search).get("loginToken");
 
@@ -157,8 +156,8 @@ const LoginPage = () => {
   };
 
   const icfg = useInstanceConfig();
-  let welcomeTo = "Ketesa";
-  let logoUrl = "./images/logo.webp";
+  let welcomeTo = "EKO";
+  let logoUrl = "https://admin.eko.bz/images/eko-logo.png";
   let backgroundUrl = "";
   if (icfg.name) {
     welcomeTo = icfg.name;
@@ -171,96 +170,131 @@ const LoginPage = () => {
   }
 
   return (
-    <Form defaultValues={{ base_url: base_url }} onSubmit={handleSubmit} mode="onBlur">
-      <LoginFormBox backgroundUrl={backgroundUrl}>
-        {!backgroundUrl && (
-          <>
-            <div className="login-orb login-orb-1" />
-            <div className="login-orb login-orb-2" />
-            <div className="login-orb login-orb-3" />
-          </>
-        )}
-        <Card className="card">
-          <Box className="avatar">
-            {loading ? (
-              <CircularProgress size={80} thickness={3} />
-            ) : (
-              <Avatar sx={{ width: { xs: "80px", sm: "120px" }, height: { xs: "80px", sm: "120px" } }} src={logoUrl} />
-            )}
-          </Box>
-          <Box className="hint">{translate("ketesa.auth.welcome", { name: welcomeTo })}</Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              color: "text.secondary",
-              fontSize: "0.85rem",
-              mt: -1,
-              mb: 1.5,
-              px: 2,
-              textAlign: "center",
-            }}
-          >
-            {translate("ketesa.auth.description")}
-          </Box>
-          <Box className="form">
-            <FormDataConsumer>
-              {({ formData }) => (
-                <LoginFormSections
-                  formData={formData}
-                  probeState={probeState}
-                  loginMethod={loginMethod}
-                  setLoginMethod={setLoginMethod}
-                  loading={loading}
-                  restrictBaseUrlSingle={restrictBaseUrlSingle}
-                  restrictBaseUrlMultiple={restrictBaseUrlMultiple}
-                  baseUrlChoices={baseUrlChoices}
-                  start={start}
-                />
+    <ThemeProvider theme={darkTheme}>
+      <Form defaultValues={{ base_url: base_url }} onSubmit={handleSubmit} mode="onBlur">
+        <LoginFormBox backgroundUrl={backgroundUrl}>
+          {!backgroundUrl && (
+            <>
+              <MatrixRain />
+              <div className="login-orb login-orb-1" />
+              <div className="login-orb login-orb-2" />
+              <div className="login-orb login-orb-3" />
+              <div className="login-hud" aria-hidden="true">
+                <div className="cyber-globe">
+                  <div className="globe-glow" />
+                  <div className="globe-sphere">
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                  </div>
+                </div>
+                <span className="hud-corner hud-corner-tl" />
+                <span className="hud-corner hud-corner-tr" />
+                <span className="hud-corner hud-corner-bl" />
+                <span className="hud-corner hud-corner-br" />
+                <span className="hud-scan" />
+              </div>
+              <div className="login-decor" aria-hidden="true">
+                <LockOutlinedIcon className="decor-icon decor-1" />
+                <ShieldOutlinedIcon className="decor-icon decor-2" />
+                <FingerprintIcon className="decor-icon decor-3" />
+                <VpnKeyOutlinedIcon className="decor-icon decor-4" />
+                <QrCode2Icon className="decor-icon decor-5" />
+                <SecurityOutlinedIcon className="decor-icon decor-6" />
+              </div>
+            </>
+          )}
+          <Card className="card">
+            <Box className="avatar">
+              {loading ? (
+                <CircularProgress size={64} thickness={3} sx={{ color: "#FF7A1A" }} />
+              ) : (
+                <Box component="img" src={logoUrl} alt={welcomeTo} className="login-logo" />
               )}
-            </FormDataConsumer>
-            <LoginButtons probeState={probeState} loginMethod={loginMethod} loading={loading} />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 0.5,
-              pb: 2,
-              opacity: 0.6,
-              "&:hover": { opacity: 0.85 },
-              transition: "opacity 150ms ease",
-            }}
-          >
-            <TranslateIcon sx={{ fontSize: "0.95rem", color: "text.secondary" }} />
-            <Select
-              variant="standard"
-              value={locale}
-              onChange={e => setLocale(e.target.value)}
-              disabled={loading}
-              disableUnderline
+            </Box>
+            <Box className="hint">Command Center</Box>
+            <Box
               sx={{
-                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
                 color: "text.secondary",
-                "& .MuiSelect-select": { py: 0 },
-                "& .MuiSvgIcon-root": { color: "text.secondary", fontSize: "1rem" },
+                fontSize: "0.85rem",
+                mt: -1,
+                mb: 1.5,
+                px: 2,
+                textAlign: "center",
               }}
             >
-              {locales.map(l => (
-                <MenuItem key={l.locale} value={l.locale} dense>
-                  {l.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
-        </Card>
-      </LoginFormBox>
-      <Notification />
-      <EtkeAttribution>
-        <Footer />
-      </EtkeAttribution>
-    </Form>
+              This is a restricted-access gateway to the tactical communications command center, engineered exclusively
+              for authorized law enforcement and public safety personnel.
+            </Box>
+            <Box className="form">
+              <FormDataConsumer>
+                {({ formData }) => (
+                  <LoginFormSections
+                    formData={formData}
+                    probeState={probeState}
+                    loginMethod={loginMethod}
+                    setLoginMethod={setLoginMethod}
+                    loading={loading}
+                    restrictBaseUrlSingle={restrictBaseUrlSingle}
+                    restrictBaseUrlMultiple={restrictBaseUrlMultiple}
+                    baseUrlChoices={baseUrlChoices}
+                    start={start}
+                  />
+                )}
+              </FormDataConsumer>
+              <LoginButtons probeState={probeState} loginMethod={loginMethod} loading={loading} />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 0.5,
+                pb: 2,
+                opacity: 0.6,
+                "&:hover": { opacity: 0.85 },
+                transition: "opacity 150ms ease",
+              }}
+            >
+              <TranslateIcon sx={{ fontSize: "0.95rem", color: "text.secondary" }} />
+              <Select
+                variant="standard"
+                value={locale}
+                onChange={e => setLocale(e.target.value)}
+                disabled={loading}
+                disableUnderline
+                sx={{
+                  fontSize: "0.8rem",
+                  color: "text.secondary",
+                  "& .MuiSelect-select": { py: 0 },
+                  "& .MuiSvgIcon-root": { color: "text.secondary", fontSize: "1rem" },
+                }}
+              >
+                {locales.map(l => (
+                  <MenuItem key={l.locale} value={l.locale} dense>
+                    {l.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          </Card>
+        </LoginFormBox>
+        <Notification />
+        <EtkeAttribution>
+          <Footer />
+        </EtkeAttribution>
+      </Form>
+    </ThemeProvider>
   );
 };
 

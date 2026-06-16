@@ -47,7 +47,7 @@ const queryClient = new QueryClient();
 export const App = ({ i18nProvider }: { i18nProvider: I18nProvider }) => {
   const icfg = useInstanceConfig();
   const masEnabled = isMAS();
-  let title = "Ketesa";
+  let title = "EKO - Command Center";
   if (icfg.name) {
     title = icfg.name;
   }
@@ -65,6 +65,7 @@ export const App = ({ i18nProvider }: { i18nProvider: I18nProvider }) => {
         i18nProvider={i18nProvider}
         theme={lightTheme}
         darkTheme={darkTheme}
+        defaultTheme="dark"
       >
         <CustomRoutes>
           <Route path="/donate" element={<DonatePage />} />
