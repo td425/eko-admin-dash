@@ -122,6 +122,18 @@ const LoginFormBox = styled(Box, {
       },
     }),
 
+    // Matrix-style digital rain (canvas), behind the rest of the scene.
+    "& .matrix-rain": {
+      position: "absolute",
+      inset: 0,
+      width: "100%",
+      height: "100%",
+      zIndex: 0,
+      pointerEvents: "none",
+      opacity: 0.5,
+      mixBlendMode: "screen",
+    },
+
     // Neon glow orbs (children rendered by LoginPage)
     "& .login-orb": {
       position: "absolute",

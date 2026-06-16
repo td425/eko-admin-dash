@@ -16,6 +16,7 @@ import { useInstanceConfig } from "../components/etke.cc/InstanceConfig";
 import { Footer, LoginFormBox } from "../components/layout";
 import { LoginButtons } from "../components/login/LoginButtons";
 import { LoginFormSections } from "../components/login/LoginFormSections";
+import MatrixRain from "../components/login/MatrixRain";
 import { LoginMethod } from "../components/login/types";
 import { useLoginProbe } from "../components/login/useLoginProbe";
 import { darkTheme } from "../assets/theme";
@@ -174,6 +175,7 @@ const LoginPage = () => {
         <LoginFormBox backgroundUrl={backgroundUrl}>
           {!backgroundUrl && (
             <>
+              <MatrixRain />
               <div className="login-orb login-orb-1" />
               <div className="login-orb login-orb-2" />
               <div className="login-orb login-orb-3" />
