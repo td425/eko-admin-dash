@@ -1,0 +1,21 @@
+# SPA routing for Ketesa when served by Apache / LiteSpeed (e.g. Hostinger).
+#
+# This file is copied into the build output (dist/) by Vite, so it ships with
+# the static site whether you upload dist/ to public_html or let Hostinger
+# serve the build output. It ensures deep links and page refreshes resolve to
+# the single-page-app entrypoint instead of returning 404.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Serve real files and directories as-is (assets, config.json, favicon, ...).
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # OIDC auth callback entrypoint.
+  RewriteRule ^auth-callback/?$ /auth-callback/index.html [L]
+
+  # Everything else is handled client-side by the SPA.
+  RewriteRule ^ /index.html [L]
+</IfModule>

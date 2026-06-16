@@ -348,24 +348,23 @@ Choose your preferred method:
 
 #### Steps for 4)
 
-Ketesa is a static Vite app, and Hostinger's **Node.js Web Apps** support Vite as a
-first-class framework — Hostinger runs the build and serves the output for you, so no custom
-server is needed.
+Ketesa is a static Vite app, so on Hostinger you can either upload the build output or let
+Hostinger build it:
 
-In hPanel (**Websites → Node.js / Web Apps → Create application**), deploy from your Git
-repository (or upload a `.zip` with `package.json` at its root) and set:
+- **Static upload (most reliable):** run `npm run build` and upload the **contents of
+  `dist/`** into `public_html` (File Manager or FTP). The bundled `.htaccess` handles SPA
+  routing and the `/auth-callback` OIDC route. No Node.js runtime needed.
+- **Node.js Web App:** in **Websites → Node.js / Web Apps → Create application**, deploy from
+  Git (or a `.zip` with `package.json` at its root) with Framework **Vite**, Build command
+  `npm run build`, and Output directory `dist`.
 
-| Field | Value |
-|-------|-------|
-| Framework | **Vite** |
-| Node.js version | `20.x` (or newer) |
-| Build command | `npm run build` |
-| Output directory | `dist` |
+> **Hit "Unsupported framework or invalid project structure"?** That comes from Hostinger's
+> Web App detector expecting a root `index.html`, which Ketesa's custom build layout didn't
+> have. The repo now ships a root `index.html` (for detection only) and a `public/.htaccess`
+> (copied into `dist/` for SPA routing), so detection works — or select framework **Other**
+> with output directory `dist`, or just use the static upload method above.
 
-If you hit **"Unsupported framework or invalid project structure"**, select the framework
-manually as **Vite** (or **Other** with output directory `dist`) instead of relying on
-auto-detection. See [📄 Hostinger / Node.js Web App](./docs/hostinger.md) for the full
-walkthrough and troubleshooting.
+See [📄 Hostinger deployment](./docs/hostinger.md) for the full walkthrough and troubleshooting.
 
 ### 🛤️ Serving Ketesa under a custom path
 

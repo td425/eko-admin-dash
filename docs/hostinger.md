@@ -1,53 +1,78 @@
-# Deploying Ketesa on Hostinger (Node.js Web App)
+# Deploying Ketesa on Hostinger
 
-Ketesa is a static single-page application built with [Vite](https://vitejs.dev/).
-Hostinger's **Node.js Web Apps** support Vite as a first-class frontend framework: it runs
-the build command for you and serves the generated `dist/` directory as static files. No
-custom server is required.
+Ketesa is a static single-page application built with [Vite](https://vitejs.dev/). There are
+two ways to put it on Hostinger:
 
-## Prerequisites
+- **A. Static upload** — build it, upload `dist/` to `public_html`. Works on any Hostinger
+  plan, no framework detection involved. **Most reliable.**
+- **B. Node.js Web App** — let Hostinger build and serve it from your Git repo.
 
-- A Hostinger plan that offers **Node.js / Web Apps** hosting.
-- Node.js **20.x or newer** (Vite 8 requires it; declared via the `engines` field in
-  `package.json`). Hostinger supports `18.x`, `20.x`, `22.x`, and `24.x` — pick `20.x` or
-  newer.
+> **Why the "Unsupported framework or invalid project structure" error happens**
+>
+> Ketesa uses a non-standard Vite layout: its entry HTML lives in `src/entrypoints/` and the
+> build is wired up explicitly in `vite.config.ts`. Hostinger's Web App detector expects the
+> conventional Vite shape with an `index.html` at the project root, so detection failed.
+>
+> The repository now ships a root [`index.html`](../index.html) purely to satisfy that
+> detection (the real build ignores it), plus a [`public/.htaccess`](../public/.htaccess) that
+> Vite copies into `dist/` for SPA routing. With these in place, both methods below work.
 
-## Create the application
+---
 
-In hPanel go to **Websites → (your site) → Node.js / Web Apps → Create application** and
-deploy either from your Git repository or by uploading a `.zip` whose **`package.json` is at
-the archive root** (not inside a subfolder).
+## Method A — Static upload to `public_html` (recommended)
 
-Use these settings:
+1. Build locally (or in CI):
+
+   ```sh
+   npm install
+   npm run build      # produces ./dist
+   ```
+
+2. In hPanel open **Files → File Manager** (or use FTP/SFTP) and upload the **contents of
+   `dist/`** into `public_html` — keep the folder structure intact (so `index.html`,
+   `assets/`, `auth-callback/`, `config.json` and `.htaccess` all sit directly inside
+   `public_html`).
+
+   > Tip: zip the *contents* of `dist/` (not the `dist` folder itself), upload the zip into
+   > `public_html`, and extract it there.
+
+3. Open your domain. The bundled `.htaccess` handles client-side routing and the
+   `/auth-callback` OIDC route, so deep links and refreshes resolve correctly.
+
+That's the whole process — no Node.js runtime is involved; Hostinger's webserver
+(LiteSpeed/Apache) serves the static files.
+
+---
+
+## Method B — Node.js Web App (build on Hostinger)
+
+In hPanel go to **Websites → Node.js / Web Apps → Create application**, deploy from your Git
+repository (or a `.zip` with `package.json` at its root), and set:
 
 | Field | Value |
 |-------|-------|
-| Framework | **Vite** |
-| Node.js version | `20.x` (or newer) |
+| Framework | **Vite** (or **Other** if Vite still isn't detected) |
+| Node.js version | `20.x` (or newer; matches the `engines` field) |
 | Build command | `npm run build` |
-| Output / publish directory | `dist` |
+| Output directory | `dist` |
 | Root directory | the repository root (where `package.json` lives) |
 
-That's it — Hostinger installs dependencies (including the dev dependencies needed to build),
-runs `npm run build`, and serves `dist/`.
+Hostinger installs dependencies (including the dev dependencies needed to build), runs
+`npm run build`, and serves `dist/`.
 
-## Fixing "Unsupported framework or invalid project structure"
+If you still hit **"Unsupported framework or invalid project structure"**:
 
-This error means Hostinger's auto-detector could not classify the project. To resolve it:
+- Select the framework **manually** as **Vite**, or use **Other** with output directory
+  `dist` — that skips the framework-specific structure validation.
+- Make sure `package.json` (and the root `index.html`) are at the **root** of the repo / zip,
+  not inside a subfolder.
+- Confirm the chosen Node.js version matches the `engines` field (`>=20`).
 
-- **Select the framework manually as `Vite`** instead of relying on auto-detection.
-- Make sure `package.json` is at the **root** of the repository / zip.
-- Set the **Build command** to `npm run build` and the **Output directory** to `dist`.
-- Ensure the chosen Node.js version matches the `engines` field (`>=20`).
-- Keep the project a pure frontend app — do not add a long-running server framework (such as
-  Express) to `dependencies`, or detection may treat it as an ambiguous frontend+backend app.
-
-If auto-detection still fails, choose the **"Other"** type and set the output directory to
-`dist`; Hostinger will then build and serve the static output.
+---
 
 ## Local verification
 
-Reproduce the production build and preview it locally exactly as Hostinger serves it:
+Reproduce the production build and preview it exactly as it will be served:
 
 ```sh
 npm install
@@ -64,6 +89,7 @@ require a rebuild — it is read by the browser on each load.
 
 ## Custom base path
 
-The base path is baked in at build time. To serve Ketesa under a subpath, set the build
-command to `npm run build -- --base=/my-prefix`. See
+The base path is baked in at build time. To serve Ketesa under a subpath, build with
+`npm run build -- --base=/my-prefix` and adjust the `.htaccess` `RewriteBase` / fallback paths
+accordingly. See
 [Serving Ketesa under a custom path](../README.md#%EF%B8%8F-serving-ketesa-under-a-custom-path).
