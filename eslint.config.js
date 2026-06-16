@@ -27,6 +27,15 @@ export default [
     ignores: ["coverage/", "dist/", "docs/testdata/", "docs/screenshots/prepare.js", "src/assets/webfonts/**"],
   },
   js.configs.recommended,
+  {
+    // Production Node.js server used for Node hosting (e.g. Hostinger).
+    files: ["server.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
   ...tseslint.configs.recommended.map(config => ({
     ...config,
     files: ["**/*.ts", "**/*.tsx"],
