@@ -41,19 +41,11 @@ const logoGlow = keyframes`
   50% { filter: drop-shadow(0 0 22px rgba(255, 122, 26, 0.8)); }
 `;
 
-// HUD "encryption link" scene behind the card: rotating reticle, corner
+// HUD scene behind the card: a rotating wireframe cyber-globe, corner
 // brackets and a scan line sweeping down the viewport.
-const reticleSpin = keyframes`
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-`;
-
-const spinSimple = keyframes`
-  to { transform: rotate(360deg); }
-`;
-
-const spinReverse = keyframes`
-  to { transform: rotate(-360deg); }
+const globeSpin = keyframes`
+  0% { transform: rotateX(-16deg) rotateY(0deg); }
+  100% { transform: rotateX(-16deg) rotateY(360deg); }
 `;
 
 const scanMove = keyframes`
@@ -158,40 +150,90 @@ const LoginFormBox = styled(Box, {
       pointerEvents: "none",
       overflow: "hidden",
     },
-    // Central rotating targeting reticle made of concentric rings
-    "& .hud-reticle": {
+    // Rotating wireframe cyber-globe behind the card
+    "& .cyber-globe": {
       position: "absolute",
       top: "50%",
       left: "50%",
-      width: "560px",
-      height: "560px",
-      borderRadius: "50%",
-      border: `1px solid ${EKO_ORANGE}1f`,
-      borderTopColor: `${EKO_ORANGE}66`,
-      transform: "translate(-50%, -50%)",
-      animation: `${reticleSpin} 40s linear infinite`,
+      width: "680px",
+      height: "680px",
+      marginLeft: "-340px",
+      marginTop: "-340px",
+      perspective: "1100px",
       opacity: 0.5,
-      [theme.breakpoints.down("sm")]: {
-        width: "360px",
-        height: "360px",
-      },
+      zIndex: 0,
+      pointerEvents: "none",
     },
-    "& .hud-reticle::before": {
-      content: '""',
+    "& .globe-glow": {
       position: "absolute",
-      inset: "60px",
+      inset: "8%",
       borderRadius: "50%",
-      border: `1px dashed ${EKO_ORANGE}40`,
-      animation: `${spinReverse} 24s linear infinite`,
+      background: `radial-gradient(circle at 38% 32%, ${EKO_ORANGE}26 0%, ${EKO_ORANGE}0d 45%, transparent 70%)`,
+      filter: "blur(2px)",
     },
-    "& .hud-reticle::after": {
-      content: '""',
+    "& .globe-sphere": {
       position: "absolute",
-      inset: "130px",
+      inset: 0,
+      transformStyle: "preserve-3d",
+      animation: `${globeSpin} 28s linear infinite`,
+    },
+    // Longitude lines: full circles rotated around the vertical axis
+    "& .globe-meridian": {
+      position: "absolute",
+      inset: 0,
       borderRadius: "50%",
-      border: `1px solid ${EKO_ORANGE}26`,
-      borderBottomColor: `${EKO_ORANGE}73`,
-      animation: `${spinSimple} 16s linear infinite`,
+      border: `1px solid ${EKO_ORANGE}3d`,
+      boxShadow: `inset 0 0 12px ${EKO_ORANGE}1a`,
+    },
+    "& .globe-meridian:nth-of-type(1)": { transform: "rotateY(0deg)" },
+    "& .globe-meridian:nth-of-type(2)": { transform: "rotateY(30deg)" },
+    "& .globe-meridian:nth-of-type(3)": { transform: "rotateY(60deg)" },
+    "& .globe-meridian:nth-of-type(4)": { transform: "rotateY(90deg)" },
+    "& .globe-meridian:nth-of-type(5)": { transform: "rotateY(120deg)" },
+    "& .globe-meridian:nth-of-type(6)": { transform: "rotateY(150deg)" },
+    // Latitude rings: horizontal circles stacked along the vertical axis
+    "& .globe-latitude": {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      borderRadius: "50%",
+      border: `1px solid ${EKO_ORANGE}30`,
+    },
+    "& .globe-latitude:nth-of-type(1)": {
+      width: "680px",
+      height: "680px",
+      marginLeft: "-340px",
+      marginTop: "-340px",
+      borderColor: `${EKO_ORANGE}59`,
+      transform: "rotateX(90deg) translateZ(0)",
+    },
+    "& .globe-latitude:nth-of-type(2)": {
+      width: "588px",
+      height: "588px",
+      marginLeft: "-294px",
+      marginTop: "-294px",
+      transform: "rotateX(90deg) translateZ(170px)",
+    },
+    "& .globe-latitude:nth-of-type(3)": {
+      width: "588px",
+      height: "588px",
+      marginLeft: "-294px",
+      marginTop: "-294px",
+      transform: "rotateX(90deg) translateZ(-170px)",
+    },
+    "& .globe-latitude:nth-of-type(4)": {
+      width: "340px",
+      height: "340px",
+      marginLeft: "-170px",
+      marginTop: "-170px",
+      transform: "rotateX(90deg) translateZ(294px)",
+    },
+    "& .globe-latitude:nth-of-type(5)": {
+      width: "340px",
+      height: "340px",
+      marginLeft: "-170px",
+      marginTop: "-170px",
+      transform: "rotateX(90deg) translateZ(-294px)",
     },
     // HUD corner brackets at the viewport edges
     "& .hud-corner": {

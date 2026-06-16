@@ -172,7 +172,22 @@ const LoginPage = () => {
               <div className="login-orb login-orb-2" />
               <div className="login-orb login-orb-3" />
               <div className="login-hud" aria-hidden="true">
-                <span className="hud-reticle" />
+                <div className="cyber-globe">
+                  <div className="globe-glow" />
+                  <div className="globe-sphere">
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <span className="globe-meridian" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                    <i className="globe-latitude" />
+                  </div>
+                </div>
                 <span className="hud-corner hud-corner-tl" />
                 <span className="hud-corner hud-corner-tr" />
                 <span className="hud-corner hud-corner-bl" />
