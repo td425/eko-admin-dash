@@ -55,6 +55,12 @@ const scanMove = keyframes`
   100% { transform: translateY(100vh); opacity: 0; }
 `;
 
+// Floating "encrypted" decoration icons scattered across the free space.
+const floatIcon = keyframes`
+  0%, 100% { transform: translateY(0); opacity: 0.16; }
+  50% { transform: translateY(-12px); opacity: 0.32; }
+`;
+
 const LoginFormBox = styled(Box, {
   shouldForwardProp: prop => prop !== "backgroundUrl",
 })<LoginFormBoxProps>(({ theme, backgroundUrl }) => {
@@ -68,6 +74,13 @@ const LoginFormBox = styled(Box, {
     justifyContent: "flex-start",
     position: "relative",
     overflow: "hidden",
+
+    // Desktop: dock the login card to the right, leaving the left free for
+    // the cyber-globe and encrypted decoration (mirrors the sci-fi reference).
+    [theme.breakpoints.up("sm")]: {
+      justifyContent: "center",
+      alignItems: "flex-end",
+    },
     background: hasCustomBg
       ? `url(${backgroundUrl})`
       : "radial-gradient(ellipse 120% 90% at 50% -10%, #112143 0%, #0a1020 45%, #04060c 100%)",
@@ -150,19 +163,25 @@ const LoginFormBox = styled(Box, {
       pointerEvents: "none",
       overflow: "hidden",
     },
-    // Rotating wireframe cyber-globe behind the card
+    // Rotating wireframe cyber-globe — docked to the left, partly off-screen.
     "& .cyber-globe": {
       position: "absolute",
       top: "50%",
-      left: "50%",
+      left: 0,
       width: "680px",
       height: "680px",
-      marginLeft: "-340px",
-      marginTop: "-340px",
-      perspective: "1100px",
-      opacity: 0.5,
+      transform: "translate(-22%, -50%) scale(1.2)",
+      transformOrigin: "center",
+      perspective: "1200px",
+      opacity: 0.6,
       zIndex: 0,
       pointerEvents: "none",
+      // On small screens, recede behind the full-width card.
+      [theme.breakpoints.down("sm")]: {
+        left: "50%",
+        transform: "translate(-50%, -45%) scale(0.55)",
+        opacity: 0.22,
+      },
     },
     "& .globe-glow": {
       position: "absolute",
@@ -261,6 +280,29 @@ const LoginFormBox = styled(Box, {
       animation: `${scanMove} 6s ease-in-out infinite`,
     },
 
+    // Scattered "encrypted" icons floating in the free space (left/top/bottom).
+    "& .login-decor": {
+      position: "absolute",
+      inset: 0,
+      zIndex: 0,
+      pointerEvents: "none",
+      // Hidden on phones where the card spans the full width.
+      [theme.breakpoints.down("sm")]: { display: "none" },
+    },
+    "& .decor-icon": {
+      position: "absolute",
+      color: EKO_ORANGE,
+      opacity: 0.22,
+      filter: `drop-shadow(0 0 8px ${EKO_ORANGE}66)`,
+      animation: `${floatIcon} 9s ease-in-out infinite`,
+    },
+    "& .decor-1": { top: "13%", left: "9%", fontSize: "32px" },
+    "& .decor-2": { bottom: "16%", left: "13%", fontSize: "42px", animationDelay: "1.4s" },
+    "& .decor-3": { top: "48%", left: "2.5%", fontSize: "34px", animationDelay: "0.7s" },
+    "& .decor-4": { top: "9%", left: "44%", fontSize: "26px", animationDelay: "2.1s" },
+    "& .decor-5": { bottom: "11%", left: "40%", fontSize: "30px", animationDelay: "1s" },
+    "& .decor-6": { top: "30%", left: "30%", fontSize: "24px", animationDelay: "2.7s" },
+
     // Glass HUD panel
     "& .card": {
       position: "relative",
@@ -274,6 +316,12 @@ const LoginFormBox = styled(Box, {
       border: `1px solid ${EKO_ORANGE}59`,
       boxShadow: `0 0 40px rgba(255,122,26,0.16), 0 20px 60px rgba(0,0,0,0.6), inset 0 0 32px rgba(255,122,26,0.05)`,
       overflow: "hidden",
+      // Docked to the right on desktop, vertically centred.
+      [theme.breakpoints.up("sm")]: {
+        marginTop: "2rem",
+        marginBottom: "2rem",
+        marginRight: "7vw",
+      },
     },
     // HUD corner brackets (top-left + bottom-right)
     "& .card::before": {

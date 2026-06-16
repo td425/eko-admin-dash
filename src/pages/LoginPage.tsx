@@ -1,4 +1,10 @@
+import FingerprintIcon from "@mui/icons-material/Fingerprint";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import QrCode2Icon from "@mui/icons-material/QrCode2";
+import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
+import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import TranslateIcon from "@mui/icons-material/Translate";
+import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
 import { Box, Card, CircularProgress, MenuItem, Select } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
@@ -193,6 +199,14 @@ const LoginPage = () => {
                 <span className="hud-corner hud-corner-bl" />
                 <span className="hud-corner hud-corner-br" />
                 <span className="hud-scan" />
+              </div>
+              <div className="login-decor" aria-hidden="true">
+                <LockOutlinedIcon className="decor-icon decor-1" />
+                <ShieldOutlinedIcon className="decor-icon decor-2" />
+                <FingerprintIcon className="decor-icon decor-3" />
+                <VpnKeyOutlinedIcon className="decor-icon decor-4" />
+                <QrCode2Icon className="decor-icon decor-5" />
+                <SecurityOutlinedIcon className="decor-icon decor-6" />
               </div>
             </>
           )}
