@@ -472,6 +472,19 @@ export const AdminLayout = ({ children }) => {
           ["& .RaLayout-appFrame"]: {
             minHeight: "90vh",
             height: "90vh",
+            // Sci-fi backdrop behind the dashboard: deep-space gradient + a
+            // faint orange grid. Content panels keep their own backgrounds, so
+            // this only shows through margins and gaps.
+            ...(theme.palette.mode === "dark" && {
+              backgroundColor: "#04060c",
+              backgroundImage: [
+                "radial-gradient(ellipse 100% 70% at 50% -10%, rgba(17,33,67,0.55) 0%, transparent 60%)",
+                "linear-gradient(rgba(255,122,26,0.04) 1px, transparent 1px)",
+                "linear-gradient(90deg, rgba(255,122,26,0.04) 1px, transparent 1px)",
+              ].join(", "),
+              backgroundSize: "auto, 44px 44px, 44px 44px",
+              backgroundAttachment: "fixed",
+            }),
           },
           ["& .RaLayout-content"]: {
             minWidth: 0,

@@ -93,7 +93,7 @@ const sharedComponents: ThemeOptions["components"] = {
   MuiButtonBase: {
     styleOverrides: {
       root: ({ theme }) =>
-        focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.35)" : "rgba(91, 141, 239, 0.4)"),
+        focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.35)" : "rgba(91, 141, 239, 0.4)"),
     },
   },
   MuiButton: {
@@ -141,14 +141,14 @@ const sharedComponents: ThemeOptions["components"] = {
       root: ({ theme }) => ({
         borderRadius: 4,
         transition: "border-color 150ms ease, box-shadow 150ms ease",
-        ...focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.3)" : "rgba(91, 141, 239, 0.3)"),
+        ...focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.3)" : "rgba(91, 141, 239, 0.3)"),
       }),
     },
   },
   MuiFilledInput: {
     styleOverrides: {
       root: ({ theme }) =>
-        focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.3)" : "rgba(91, 141, 239, 0.3)"),
+        focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.3)" : "rgba(91, 141, 239, 0.3)"),
     },
   },
   MuiChip: {
@@ -156,7 +156,7 @@ const sharedComponents: ThemeOptions["components"] = {
       root: ({ theme }) => ({
         borderRadius: 4,
         transition: "background-color 150ms ease, box-shadow 150ms ease",
-        ...focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.35)" : "rgba(91, 141, 239, 0.4)"),
+        ...focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.35)" : "rgba(91, 141, 239, 0.4)"),
       }),
     },
   },
@@ -164,7 +164,7 @@ const sharedComponents: ThemeOptions["components"] = {
     styleOverrides: {
       root: ({ theme }) => ({
         borderRadius: 2,
-        ...focusRing(theme.palette.mode === "dark" ? "rgba(244, 147, 0, 0.35)" : "rgba(91, 141, 239, 0.4)"),
+        ...focusRing(theme.palette.mode === "dark" ? "rgba(255, 122, 26, 0.35)" : "rgba(91, 141, 239, 0.4)"),
       }),
     },
   },
@@ -411,7 +411,7 @@ export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     contrastThreshold: 4.5,
-    primary: { main: "#F49300" },
+    primary: { main: "#FF7A1A" },
     secondary: { main: "#5B8DAF" },
     error: { main: "#FF6B7A" },
     warning: { main: "#FBBF24" },

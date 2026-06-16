@@ -65,6 +65,7 @@ export const App = ({ i18nProvider }: { i18nProvider: I18nProvider }) => {
         i18nProvider={i18nProvider}
         theme={lightTheme}
         darkTheme={darkTheme}
+        defaultTheme="dark"
       >
         <CustomRoutes>
           <Route path="/donate" element={<DonatePage />} />
