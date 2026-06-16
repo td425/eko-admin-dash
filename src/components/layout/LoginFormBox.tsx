@@ -41,6 +41,28 @@ const logoGlow = keyframes`
   50% { filter: drop-shadow(0 0 22px rgba(255, 122, 26, 0.8)); }
 `;
 
+// HUD "encryption link" scene behind the card: rotating reticle, corner
+// brackets and a scan line sweeping down the viewport.
+const reticleSpin = keyframes`
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+`;
+
+const spinSimple = keyframes`
+  to { transform: rotate(360deg); }
+`;
+
+const spinReverse = keyframes`
+  to { transform: rotate(-360deg); }
+`;
+
+const scanMove = keyframes`
+  0% { transform: translateY(-10vh); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+`;
+
 const LoginFormBox = styled(Box, {
   shouldForwardProp: prop => prop !== "backgroundUrl",
 })<LoginFormBoxProps>(({ theme, backgroundUrl }) => {
@@ -126,6 +148,75 @@ const LoginFormBox = styled(Box, {
       right: "18%",
       background: "rgba(64, 156, 255, 0.10)",
       animation: `${float2} 30s ease-in-out infinite`,
+    },
+
+    // HUD "encryption connection" layer (behind the card)
+    "& .login-hud": {
+      position: "absolute",
+      inset: 0,
+      zIndex: 0,
+      pointerEvents: "none",
+      overflow: "hidden",
+    },
+    // Central rotating targeting reticle made of concentric rings
+    "& .hud-reticle": {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      width: "560px",
+      height: "560px",
+      borderRadius: "50%",
+      border: `1px solid ${EKO_ORANGE}1f`,
+      borderTopColor: `${EKO_ORANGE}66`,
+      transform: "translate(-50%, -50%)",
+      animation: `${reticleSpin} 40s linear infinite`,
+      opacity: 0.5,
+      [theme.breakpoints.down("sm")]: {
+        width: "360px",
+        height: "360px",
+      },
+    },
+    "& .hud-reticle::before": {
+      content: '""',
+      position: "absolute",
+      inset: "60px",
+      borderRadius: "50%",
+      border: `1px dashed ${EKO_ORANGE}40`,
+      animation: `${spinReverse} 24s linear infinite`,
+    },
+    "& .hud-reticle::after": {
+      content: '""',
+      position: "absolute",
+      inset: "130px",
+      borderRadius: "50%",
+      border: `1px solid ${EKO_ORANGE}26`,
+      borderBottomColor: `${EKO_ORANGE}73`,
+      animation: `${spinSimple} 16s linear infinite`,
+    },
+    // HUD corner brackets at the viewport edges
+    "& .hud-corner": {
+      position: "absolute",
+      width: "54px",
+      height: "54px",
+      borderColor: EKO_ORANGE,
+      borderStyle: "solid",
+      borderWidth: 0,
+      opacity: 0.55,
+    },
+    "& .hud-corner-tl": { top: "26px", left: "26px", borderTopWidth: "2px", borderLeftWidth: "2px" },
+    "& .hud-corner-tr": { top: "26px", right: "26px", borderTopWidth: "2px", borderRightWidth: "2px" },
+    "& .hud-corner-bl": { bottom: "26px", left: "26px", borderBottomWidth: "2px", borderLeftWidth: "2px" },
+    "& .hud-corner-br": { bottom: "26px", right: "26px", borderBottomWidth: "2px", borderRightWidth: "2px" },
+    // Encryption scan line sweeping down the screen
+    "& .hud-scan": {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      top: 0,
+      height: "2px",
+      background: `linear-gradient(90deg, transparent, ${EKO_ORANGE}cc, transparent)`,
+      boxShadow: `0 0 16px ${EKO_ORANGE}99`,
+      animation: `${scanMove} 6s ease-in-out infinite`,
     },
 
     // Glass HUD panel

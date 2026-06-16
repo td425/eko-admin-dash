@@ -2,16 +2,7 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import { Box, Card, CircularProgress, MenuItem, Select } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import {
-  Form,
-  FormDataConsumer,
-  Notification,
-  useLogin,
-  useNotify,
-  useLocaleState,
-  useTranslate,
-  useLocales,
-} from "react-admin";
+import { Form, FormDataConsumer, Notification, useLogin, useNotify, useLocaleState, useLocales } from "react-admin";
 
 import { useAppContext } from "../Context";
 import { EtkeAttribution } from "../components/etke.cc/EtkeAttribution";
@@ -90,7 +81,6 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [locale, setLocale] = useLocaleState();
   const locales = useLocales();
-  const translate = useTranslate();
   const [loginMethod, setLoginMethod] = useState<LoginMethod>("credentials");
   const loginToken = new URLSearchParams(window.location.search).get("loginToken");
 
@@ -181,6 +171,14 @@ const LoginPage = () => {
               <div className="login-orb login-orb-1" />
               <div className="login-orb login-orb-2" />
               <div className="login-orb login-orb-3" />
+              <div className="login-hud" aria-hidden="true">
+                <span className="hud-reticle" />
+                <span className="hud-corner hud-corner-tl" />
+                <span className="hud-corner hud-corner-tr" />
+                <span className="hud-corner hud-corner-bl" />
+                <span className="hud-corner hud-corner-br" />
+                <span className="hud-scan" />
+              </div>
             </>
           )}
           <Card className="card">
@@ -191,7 +189,7 @@ const LoginPage = () => {
                 <Box component="img" src={logoUrl} alt={welcomeTo} className="login-logo" />
               )}
             </Box>
-            <Box className="hint">{translate("ketesa.auth.welcome", { name: welcomeTo })}</Box>
+            <Box className="hint">Command Center</Box>
             <Box
               sx={{
                 display: "flex",
@@ -204,7 +202,8 @@ const LoginPage = () => {
                 textAlign: "center",
               }}
             >
-              {translate("ketesa.auth.description")}
+              This is a restricted-access gateway to the tactical communications command center, engineered exclusively
+              for authorized law enforcement and public safety personnel.
             </Box>
             <Box className="form">
               <FormDataConsumer>

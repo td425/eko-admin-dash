@@ -3,9 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F5F5" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0C1318" />
-    <meta name="description" content="Ketesa" />
+    <meta name="theme-color" content="#04060c" />
+    <meta name="description" content="EKO - Command Center" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -13,34 +12,19 @@
     <link rel="manifest" href="./manifest.json" media="(prefers-color-scheme: light)" data-scheme="light" />
     <link rel="manifest" href="./manifest-dark.json" media="(prefers-color-scheme: dark)" data-scheme="dark" />
     <link rel="shortcut icon" href="./favicon.ico" />
-    <title>Ketesa</title>
+    <title>EKO - Command Center</title>
     <style>
       :root {
-        color-scheme: light dark;
-        --loader-bg: #f0f2f5;
-        --loader-fg: #1858d5;
-        --loader-fg-alpha: rgba(24, 88, 213, 0.12);
-        --loader-accent: rgba(244, 147, 0, 0.08);
-        --loader-card-bg: rgba(255, 255, 255, 0.8);
-        --loader-card-border: rgba(229, 231, 235, 0.8);
-        --loader-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --loader-bg: #0c1318;
-          --loader-fg: #f49300;
-          --loader-fg-alpha: rgba(244, 147, 0, 0.15);
-          --loader-accent: rgba(244, 147, 0, 0.08);
-          --loader-card-bg: rgba(21, 28, 36, 0.75);
-          --loader-card-border: rgba(244, 147, 0, 0.18);
-          --loader-card-shadow: 0 0 30px rgba(244, 147, 0, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
+        color-scheme: dark;
+        --eko-orange: #ff7a1a;
+        --eko-orange-bright: #ff9d4d;
+        --eko-bg: #04060c;
       }
 
       body {
         margin: 0;
         padding: 0;
+        background: var(--eko-bg);
         font-family: "Inter", "Work Sans", system-ui, sans-serif;
       }
 
@@ -49,232 +33,203 @@
         height: 90vh;
       }
 
+      /* Sci-fi HUD boot loader */
       .loader-container {
+        position: fixed;
+        inset: 0;
         display: flex;
-        align-items: center;
-        justify-content: flex-start;
         flex-direction: column;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: var(--loader-bg);
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
         overflow: hidden;
+        color: var(--eko-orange);
+        background: radial-gradient(ellipse 120% 90% at 50% -10%, #112143 0%, #0a1020 45%, #04060c 100%);
       }
 
-      /* Bokeh background orbs */
-      .loader-container::before,
+      /* Perspective neon grid floor */
+      .loader-container::before {
+        content: "";
+        position: absolute;
+        left: -50%;
+        right: -50%;
+        bottom: 0;
+        height: 65%;
+        background-image:
+          linear-gradient(rgba(255, 122, 26, 0.18) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 122, 26, 0.18) 1px, transparent 1px);
+        background-size: 60px 60px;
+        transform: perspective(420px) rotateX(70deg);
+        transform-origin: 50% 100%;
+        -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 75%);
+        mask-image: linear-gradient(to top, #000 0%, transparent 75%);
+        animation: gridScroll 5s linear infinite;
+        pointer-events: none;
+      }
+
+      /* Scanlines + vignette */
       .loader-container::after {
         content: "";
         position: absolute;
         inset: 0;
         pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.16) 0,
+          rgba(0, 0, 0, 0.16) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        box-shadow: inset 0 0 220px rgba(0, 0, 0, 0.85);
       }
 
-      .loader-container::before {
-        background:
-          radial-gradient(circle 320px at 15% 25%, var(--loader-fg-alpha) 0%, transparent 70%),
-          radial-gradient(circle 250px at 80% 75%, var(--loader-accent) 0%, transparent 70%),
-          radial-gradient(circle 200px at 75% 20%, var(--loader-fg-alpha) 0%, transparent 70%);
-        animation: bgFloat1 20s ease-in-out infinite;
-      }
-
-      .loader-container::after {
-        background:
-          radial-gradient(circle 220px at 35% 55%, var(--loader-fg-alpha) 0%, transparent 70%),
-          radial-gradient(circle 180px at 65% 45%, var(--loader-accent) 0%, transparent 70%);
-        animation:
-          bgFloat2 25s ease-in-out infinite,
-          bgPulse 8s ease-in-out infinite;
-      }
-
-      /* Background orb elements */
-      .loader-bg-orb {
-        position: absolute;
-        border-radius: 50%;
-        pointer-events: none;
-        filter: blur(60px);
-      }
-
-      .loader-bg-orb-1 {
-        width: 400px;
-        height: 400px;
-        top: -5%;
-        right: -5%;
-        background: var(--loader-fg-alpha);
-        animation: bgFloat3 22s ease-in-out infinite;
-      }
-
-      .loader-bg-orb-2 {
-        width: 300px;
-        height: 300px;
-        bottom: 10%;
-        left: -3%;
-        background: var(--loader-accent);
-        animation: bgFloat1 18s ease-in-out infinite reverse;
-      }
-
-      /* Card-style loader */
       .loader-container.fade-out {
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.4s ease;
       }
 
-      .loader-card {
+      .hud {
         position: relative;
         z-index: 1;
-        width: 30rem;
-        min-height: 534px;
-        margin-top: 6rem;
-        border-radius: 8px;
-        background: var(--loader-card-bg);
-        backdrop-filter: blur(16px);
-        border: 1px solid var(--loader-card-border);
-        box-shadow: var(--loader-card-shadow);
+        width: 170px;
+        height: 170px;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 20px;
-        padding: 48px 32px;
-        box-sizing: border-box;
       }
 
-      @media (max-width: 600px) {
-        .loader-card {
-          width: 100%;
-          min-height: 100vh;
-          margin-top: 0;
-          border-radius: 0;
-          border: none;
-        }
-        .loader-spark {
-          offset-path: rect(0% 100% 100% 0%);
-        }
-      }
-
-      /* Spark traveling along card edges */
-      .loader-spark {
+      .hud-ring {
         position: absolute;
-        width: 10px;
-        height: 10px;
         border-radius: 50%;
-        background: var(--loader-fg);
-        box-shadow:
-          0 0 14px var(--loader-fg),
-          0 0 28px var(--loader-fg);
-        offset-path: rect(0% 100% 100% 0% round 8px);
-        animation: sparkTravel 4s linear infinite;
-        z-index: 2;
+        border: 2px solid rgba(255, 122, 26, 0.12);
       }
 
-      /* Pulsing placeholder circles for avatar area */
-      .loader-avatar {
-        width: 100px;
-        height: 100px;
+      .hud-ring-outer {
+        width: 170px;
+        height: 170px;
+        border-top-color: var(--eko-orange);
+        border-right-color: var(--eko-orange);
+        box-shadow: 0 0 18px rgba(255, 122, 26, 0.25);
+        animation: spin 2.4s linear infinite;
+      }
+
+      .hud-ring-mid {
+        width: 120px;
+        height: 120px;
+        border-bottom-color: var(--eko-orange);
+        border-left-color: var(--eko-orange-bright);
+        animation: spinRev 1.8s linear infinite;
+      }
+
+      .hud-ticks {
+        position: absolute;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
-        background: var(--loader-fg-alpha);
-        animation: placeholderPulse 2s ease-in-out infinite;
+        background: repeating-conic-gradient(
+          from 0deg,
+          rgba(255, 122, 26, 0.5) 0deg 2deg,
+          transparent 2deg 30deg
+        );
+        -webkit-mask: radial-gradient(transparent 64px, #000 65px);
+        mask: radial-gradient(transparent 64px, #000 65px);
+        animation: spin 8s linear infinite;
       }
 
-      /* Placeholder lines */
-      .loader-line {
-        height: 14px;
-        border-radius: 4px;
-        background: var(--loader-fg-alpha);
-        animation: placeholderPulse 2s ease-in-out infinite;
+      .hud-core {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 122, 26, 0.9) 0%,
+          rgba(255, 122, 26, 0.15) 70%,
+          transparent 100%
+        );
+        box-shadow: 0 0 24px rgba(255, 122, 26, 0.7);
+        animation: pulseCore 1.6s ease-in-out infinite;
       }
 
-      .loader-line-short {
-        width: 45%;
-        animation-delay: 0.15s;
+      .hud-bar {
+        position: relative;
+        z-index: 1;
+        width: 300px;
+        max-width: 70vw;
+        height: 6px;
+        border: 1px solid rgba(255, 122, 26, 0.4);
+        background: rgba(255, 122, 26, 0.05);
+        border-radius: 3px;
+        overflow: hidden;
       }
 
-      .loader-line-long {
-        width: 75%;
-        animation-delay: 0.3s;
+      .hud-bar span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 38%;
+        border-radius: 3px;
+        background: linear-gradient(90deg, transparent, var(--eko-orange), var(--eko-orange-bright), var(--eko-orange), transparent);
+        box-shadow: 0 0 12px rgba(255, 122, 26, 0.7);
+        animation: barSlide 1.6s ease-in-out infinite;
       }
 
-      .loader-line-medium {
-        width: 60%;
-        animation-delay: 0.45s;
+      .hud-status {
+        z-index: 1;
+        font-size: 0.78rem;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: #ffb877;
+        text-shadow: 0 0 12px rgba(255, 122, 26, 0.5);
+        animation: blink 1.6s steps(1) infinite;
       }
 
-      @keyframes sparkTravel {
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinRev {
+        to {
+          transform: rotate(-360deg);
+        }
+      }
+      @keyframes pulseCore {
+        0%,
+        100% {
+          transform: scale(0.85);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+      }
+      @keyframes barSlide {
         0% {
-          offset-distance: 0%;
+          left: -40%;
         }
         100% {
-          offset-distance: 100%;
+          left: 100%;
         }
       }
-
-      @keyframes placeholderPulse {
-        0%,
-        100% {
-          opacity: 0.4;
-        }
-        50% {
-          opacity: 0.8;
-        }
-      }
-
-      @keyframes bgFloat1 {
-        0%,
-        100% {
-          transform: translate(0, 0) scale(1);
-        }
-        25% {
-          transform: translate(60px, -40px) scale(1.1);
-        }
-        50% {
-          transform: translate(-30px, 60px) scale(0.95);
-        }
-        75% {
-          transform: translate(40px, 30px) scale(1.05);
-        }
-      }
-
-      @keyframes bgFloat2 {
-        0%,
-        100% {
-          transform: translate(0, 0) scale(1);
-        }
-        33% {
-          transform: translate(-50px, 50px) scale(1.08);
-        }
-        66% {
-          transform: translate(70px, -20px) scale(0.92);
-        }
-      }
-
-      @keyframes bgFloat3 {
+      @keyframes gridScroll {
         0% {
-          transform: translateY(0) rotate(0deg) scale(1);
-        }
-        25% {
-          transform: translateY(-12px) rotate(2deg) scale(1.03);
-        }
-        50% {
-          transform: translateY(-4px) rotate(-1deg) scale(0.98);
-        }
-        75% {
-          transform: translateY(-14px) rotate(1.5deg) scale(1.02);
+          background-position: 0 0;
         }
         100% {
-          transform: translateY(0) rotate(0deg) scale(1);
+          background-position: 0 60px;
         }
       }
-
-      @keyframes bgPulse {
+      @keyframes blink {
         0%,
-        100% {
-          opacity: 0.6;
+        70% {
+          opacity: 1;
         }
-        50% {
-          opacity: 0.9;
+        71%,
+        100% {
+          opacity: 0.45;
         }
       }
     </style>
@@ -283,18 +238,17 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div id="loader" class="loader-container">
-      <div class="loader-bg-orb loader-bg-orb-1"></div>
-      <div class="loader-bg-orb loader-bg-orb-2"></div>
-      <div class="loader-card">
-        <div class="loader-spark"></div>
-        <div class="loader-avatar"></div>
-        <div class="loader-line loader-line-short"></div>
-        <div class="loader-line loader-line-long"></div>
-        <div class="loader-line loader-line-medium"></div>
+      <div class="hud">
+        <div class="hud-ticks"></div>
+        <div class="hud-ring hud-ring-outer"></div>
+        <div class="hud-ring hud-ring-mid"></div>
+        <div class="hud-core"></div>
       </div>
+      <div class="hud-bar"><span></span></div>
+      <div class="hud-status">Establishing secure connection</div>
     </div>
-    <script type="module" src="/src/index.tsx"></script>
     <span id="js-version" style="display: none"></span>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
   <script>
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");

@@ -167,10 +167,10 @@ export default defineConfig(({ mode }) => ({
       apply: "build",
       generateBundle() {
         const base = {
-          name: "Ketesa",
-          short_name: "Ketesa",
+          name: "EKO - Command Center",
+          short_name: "EKO",
           version,
-          description: "Ketesa is an admin UI for Matrix servers, formerly Synapse Admin.",
+          description: "EKO Command Center — restricted-access tactical communications gateway.",
           lang: "en",
           dir: "auto",
           categories: ["productivity", "utilities"],
