@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
-// Half-width katakana + digits + hex letters for an authentic "digital rain" look.
-const GLYPHS = "ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEF".split("");
+// Arabic letters + Arabic-Indic numerals for the "digital rain" glyphs.
+const GLYPHS = "ابتثجحخدذرزسشصضطظعغفقكلمنهوياءأإآؤئ٠١٢٣٤٥٦٧٨٩".split("");
 
 interface MatrixRainProps {
   /** Trail colour (defaults to the EKO orange accent). */
