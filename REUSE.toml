@@ -19,6 +19,26 @@ SPDX-FileCopyrightText = "2026 Nikita Chernyi <https://etke.cc>"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
+path = [
+  "src/providers/types/user-reports.ts",
+  "src/resources/user-reports/index.ts",
+  "src/resources/user-reports/List.tsx",
+  "src/resources/user-reports/Show.tsx",
+  "src/i18n/en/user_reports.ts",
+  "src/i18n/de/user_reports.ts",
+  "src/i18n/fr/user_reports.ts",
+  "src/i18n/it/user_reports.ts",
+  "src/i18n/ja/user_reports.ts",
+  "src/i18n/zh/user_reports.ts",
+  "src/i18n/pt/user_reports.ts",
+  "src/i18n/ru/user_reports.ts",
+  "src/i18n/uk/user_reports.ts",
+  "src/i18n/fa/user_reports.ts",
+]
+SPDX-FileCopyrightText = "2026 Nikita Chernyi <https://etke.cc>"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
 path = [".dockerignore"]
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"

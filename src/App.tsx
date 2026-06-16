@@ -21,6 +21,7 @@ import { DatabaseRoomStatsList } from "./resources/statistics";
 import destinations from "./resources/destinations";
 import registrationToken from "./resources/registration-tokens";
 import reports from "./resources/reports";
+import userReports from "./resources/user-reports";
 import scheduledTasks from "./resources/scheduled-tasks";
 import roomDirectory from "./resources/room-directory";
 import rooms from "./resources/rooms";
@@ -94,6 +95,7 @@ export const App = ({ i18nProvider }: { i18nProvider: I18nProvider }) => {
         <Resource {...userMediaStats} />
         <Resource name="database_room_statistics" />
         <Resource {...reports} />
+        <Resource {...userReports} />
         <Resource {...roomDirectory} />
         {!icfg.disabled.federation && <Resource {...destinations} />}
         {!icfg.disabled.registration_tokens && <Resource {...registrationToken} />}

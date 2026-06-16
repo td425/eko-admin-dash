@@ -17,6 +17,7 @@ import {
   User,
   UserMedia,
   UserMediaStatistic,
+  UserReport,
   Whois,
 } from "../types";
 import { returnMXID } from "../../utils/mxid";
@@ -111,6 +112,12 @@ export const synapseResourceMap = {
     path: "/_synapse/admin/v1/event_reports",
     map: (er: EventReport) => ({ ...er }),
     data: "event_reports",
+    total: (json: { total: number }) => json.total,
+  },
+  user_reports: {
+    path: "/_synapse/admin/v1/user_reports",
+    map: (ur: UserReport) => ({ ...ur }),
+    data: "user_reports",
     total: (json: { total: number }) => json.total,
   },
   devices: {

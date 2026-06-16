@@ -4,6 +4,7 @@ import common from "./common";
 import mas from "./mas";
 import misc_resources from "./misc_resources";
 import reports from "./reports";
+import user_reports from "./user_reports";
 import rooms from "./rooms";
 import users from "./users";
 
@@ -18,6 +19,7 @@ const zh: SynapseTranslationMessages = {
     users,
     rooms,
     reports,
+    user_reports,
     scheduled_tasks: misc_resources.scheduled_tasks,
     connections: misc_resources.connections,
     devices: misc_resources.devices,

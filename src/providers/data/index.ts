@@ -188,6 +188,7 @@ function getSearchOrder(order: "ASC" | "DESC") {
 const buildSynapseListQuery = (
   params: {
     user_id: unknown;
+    target_user_id: unknown;
     search_term: unknown;
     name: unknown;
     destination: unknown;
@@ -212,6 +213,7 @@ const buildSynapseListQuery = (
   from,
   limit,
   user_id: params.user_id,
+  target_user_id: params.target_user_id,
   search_term: params.search_term,
   name: params.name,
   destination: params.destination,
@@ -239,6 +241,7 @@ const baseDataProvider: SynapseDataProvider = {
 
     const {
       user_id,
+      target_user_id,
       name,
       guests,
       deactivated,
@@ -265,6 +268,7 @@ const baseDataProvider: SynapseDataProvider = {
     // Shared filter param object; avoids repeating 16 keys across multiple buildSynapseListQuery calls.
     const synapseFilterParams = {
       user_id,
+      target_user_id,
       search_term,
       name,
       destination,

@@ -123,6 +123,14 @@ This document lists all supported APIs and their implementation status.
 | `/_synapse/admin/v1/event_reports/<report_id>` | GET | Get specific event report details | ✅ |
 | `/_synapse/admin/v1/event_reports/<report_id>` | DELETE | Delete a specific event report | ✅ |
 
+### User Reports
+
+| Endpoint | Method | Description | Status |
+|----------|--------|-------------|:------:|
+| `/_synapse/admin/v1/user_reports` | GET | List reported users | ✅ |
+| `/_synapse/admin/v1/user_reports/<report_id>` | GET | Get specific user report details | ✅ |
+| `/_synapse/admin/v1/user_reports/<report_id>` | DELETE | Delete a specific user report | ✅ |
+
 ### Server Notices
 
 | Endpoint | Method | Description | Status |

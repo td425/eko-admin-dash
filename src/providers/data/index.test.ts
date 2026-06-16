@@ -441,4 +441,51 @@ describe("dataProvider", () => {
     expect([...sentUserIds].sort()).toEqual([...ids].sort());
     expect(new Set(sentUserIds).size).toBe(ids.length);
   });
+
+  it("threads both user_reports filters into the list query", async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          user_reports: [
+            {
+              id: 1,
+              received_ts: 1560432668000,
+              user_id: "@reporter:provider",
+              target_user_id: "@bad:provider",
+              reason: "spam",
+            },
+          ],
+          total: 1,
+        })
+      )
+    );
+
+    const reports = await dataProvider.getList("user_reports", {
+      pagination: { page: 1, perPage: 50 },
+      sort: { field: "received_ts", order: "DESC" },
+      filter: { user_id: "reporter", target_user_id: "spammer" },
+    });
+
+    expect(reports.data[0].id).toEqual(1);
+    expect(reports.total).toEqual(1);
+    const url = vi.mocked(fetch).mock.calls[0]?.[0] as string;
+    expect(url).toContain("/_synapse/admin/v1/user_reports");
+    expect(url).toContain("user_id=reporter");
+    expect(url).toContain("target_user_id=spammer");
+  });
+
+  it("does not leak target_user_id into sibling resource queries", async () => {
+    // Regression guard: buildSynapseListQuery emits target_user_id for every resource,
+    // so an undefined value must be dropped before the URL — never sent as a stray param.
+    vi.mocked(fetch).mockResolvedValueOnce(new Response(JSON.stringify({ event_reports: [], total: 0 })));
+
+    await dataProvider.getList("reports", {
+      pagination: { page: 1, perPage: 50 },
+      sort: { field: "received_ts", order: "DESC" },
+      filter: {},
+    });
+
+    const url = vi.mocked(fetch).mock.calls[0]?.[0] as string;
+    expect(url).not.toContain("target_user_id");
+  });
 });

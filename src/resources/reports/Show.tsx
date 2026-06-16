@@ -59,7 +59,7 @@ const ReportBasicTab = () => {
         <Card variant="outlined" sx={{ height: "100%" }}>
           <CardContent>
             <LabeledField label={translate("resources.reports.fields.id")}>
-              <NumberField source="id" label={false} />
+              <TextField source="id" label={false} />
             </LabeledField>
             <LabeledField label={translate("resources.reports.fields.received_ts")}>
               <DateField source="received_ts" showTime options={DATE_FORMAT} locales={locale} label={false} />

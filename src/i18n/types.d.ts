@@ -521,6 +521,22 @@ export interface SynapseTranslationMessages extends TranslationMessages {
         fetch_event_error: string;
       };
     };
+    user_reports: {
+      name: string;
+      fields: {
+        id: string;
+        received_ts: string;
+        user_id: string;
+        target_user_id: string;
+        reason: string;
+      };
+      action: {
+        erase: {
+          title: string;
+          content: string;
+        };
+      };
+    };
     scheduled_tasks: {
       name: string;
       fields: {

@@ -5,6 +5,7 @@ import mas from "./mas";
 import misc_resources from "./misc_resources";
 import reports from "./reports";
 import rooms from "./rooms";
+import user_reports from "./user_reports";
 import users from "./users";
 
 const ru: SynapseTranslationMessages = {
@@ -18,6 +19,7 @@ const ru: SynapseTranslationMessages = {
     users,
     rooms,
     reports,
+    user_reports,
     scheduled_tasks: misc_resources.scheduled_tasks,
     connections: misc_resources.connections,
     devices: misc_resources.devices,
