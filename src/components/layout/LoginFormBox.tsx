@@ -57,8 +57,8 @@ const scanMove = keyframes`
 
 // Floating "encrypted" decoration icons scattered across the free space.
 const floatIcon = keyframes`
-  0%, 100% { transform: translateY(0); opacity: 0.16; }
-  50% { transform: translateY(-12px); opacity: 0.32; }
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-12px); opacity: 0.7; }
 `;
 
 const LoginFormBox = styled(Box, {
@@ -173,21 +173,21 @@ const LoginFormBox = styled(Box, {
       transform: "translate(-22%, -50%) scale(1.2)",
       transformOrigin: "center",
       perspective: "1200px",
-      opacity: 0.6,
+      opacity: 0.92,
       zIndex: 0,
       pointerEvents: "none",
       // On small screens, recede behind the full-width card.
       [theme.breakpoints.down("sm")]: {
         left: "50%",
         transform: "translate(-50%, -45%) scale(0.55)",
-        opacity: 0.22,
+        opacity: 0.4,
       },
     },
     "& .globe-glow": {
       position: "absolute",
       inset: "8%",
       borderRadius: "50%",
-      background: `radial-gradient(circle at 38% 32%, ${EKO_ORANGE}26 0%, ${EKO_ORANGE}0d 45%, transparent 70%)`,
+      background: `radial-gradient(circle at 38% 32%, ${EKO_ORANGE}40 0%, ${EKO_ORANGE}1a 45%, transparent 70%)`,
       filter: "blur(2px)",
     },
     "& .globe-sphere": {
@@ -201,8 +201,8 @@ const LoginFormBox = styled(Box, {
       position: "absolute",
       inset: 0,
       borderRadius: "50%",
-      border: `1px solid ${EKO_ORANGE}3d`,
-      boxShadow: `inset 0 0 12px ${EKO_ORANGE}1a`,
+      border: `1px solid ${EKO_ORANGE}80`,
+      boxShadow: `inset 0 0 14px ${EKO_ORANGE}33`,
     },
     "& .globe-meridian:nth-of-type(1)": { transform: "rotateY(0deg)" },
     "& .globe-meridian:nth-of-type(2)": { transform: "rotateY(30deg)" },
@@ -216,14 +216,14 @@ const LoginFormBox = styled(Box, {
       top: "50%",
       left: "50%",
       borderRadius: "50%",
-      border: `1px solid ${EKO_ORANGE}30`,
+      border: `1px solid ${EKO_ORANGE}59`,
     },
     "& .globe-latitude:nth-of-type(1)": {
       width: "680px",
       height: "680px",
       marginLeft: "-340px",
       marginTop: "-340px",
-      borderColor: `${EKO_ORANGE}59`,
+      borderColor: `${EKO_ORANGE}b3`,
       transform: "rotateX(90deg) translateZ(0)",
     },
     "& .globe-latitude:nth-of-type(2)": {
@@ -292,8 +292,8 @@ const LoginFormBox = styled(Box, {
     "& .decor-icon": {
       position: "absolute",
       color: EKO_ORANGE,
-      opacity: 0.22,
-      filter: `drop-shadow(0 0 8px ${EKO_ORANGE}66)`,
+      opacity: 0.5,
+      filter: `drop-shadow(0 0 10px ${EKO_ORANGE}99)`,
       animation: `${floatIcon} 9s ease-in-out infinite`,
     },
     "& .decor-1": { top: "13%", left: "9%", fontSize: "32px" },
