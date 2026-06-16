@@ -288,6 +288,7 @@ Choose your preferred method:
 | [1️⃣](#steps-for-1) | **Tarball + webserver** | Any static hosting, full control |
 | [2️⃣](#steps-for-2) | **Source + Node.js** | Development or custom builds |
 | [3️⃣](#steps-for-3) | **Docker** | Containerized deployments |
+| [4️⃣](#steps-for-4) | **Node.js host (Hostinger)** | Managed Node.js hosting (Hostinger, Render, Railway, …) |
 
 #### Steps for 1)
 
@@ -344,6 +345,27 @@ Choose your preferred method:
   ```
 
 - Open http://localhost:8080 in your browser
+
+#### Steps for 4)
+
+Ketesa ships with a small Node.js server ([`server.js`](server.js)) that serves the built
+static assets, so it runs on managed Node.js hosting such as **Hostinger** (and Render,
+Railway, etc.) without a separate webserver.
+
+On Hostinger (hPanel → **Websites** → **Node.js**):
+
+1. Set the **Application root** to the uploaded project directory and the
+   **Application startup file** to `server.js`.
+2. Upload the project (or connect the Git repository), then run **NPM Install**.
+3. Build the static assets once: from the **Run JS script** / SSH terminal run
+   `npm run build` (this needs the dev dependencies; alternatively build locally or in CI
+   and upload the resulting `dist/` folder alongside `server.js`).
+4. Start the application. The server listens on the `PORT` provided by Hostinger
+   (defaulting to `3000` locally) and binds to `0.0.0.0`.
+
+The server exposes a `/health` endpoint, serves `/auth-callback` for OIDC logins, and
+falls back to `index.html` for client-side routes. See [📄 Hostinger / Node.js hosting](./docs/hostinger.md)
+for the full walkthrough.
 
 ### 🛤️ Serving Ketesa under a custom path
 
