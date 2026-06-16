@@ -288,7 +288,7 @@ Choose your preferred method:
 | [1️⃣](#steps-for-1) | **Tarball + webserver** | Any static hosting, full control |
 | [2️⃣](#steps-for-2) | **Source + Node.js** | Development or custom builds |
 | [3️⃣](#steps-for-3) | **Docker** | Containerized deployments |
-| [4️⃣](#steps-for-4) | **Node.js host (Hostinger)** | Managed Node.js hosting (Hostinger, Render, Railway, …) |
+| [4️⃣](#steps-for-4) | **Managed host (Hostinger)** | Hostinger Node.js Web Apps and similar build-and-serve platforms |
 
 #### Steps for 1)
 
@@ -348,24 +348,24 @@ Choose your preferred method:
 
 #### Steps for 4)
 
-Ketesa ships with a small Node.js server ([`server.js`](server.js)) that serves the built
-static assets, so it runs on managed Node.js hosting such as **Hostinger** (and Render,
-Railway, etc.) without a separate webserver.
+Ketesa is a static Vite app, and Hostinger's **Node.js Web Apps** support Vite as a
+first-class framework — Hostinger runs the build and serves the output for you, so no custom
+server is needed.
 
-On Hostinger (hPanel → **Websites** → **Node.js**):
+In hPanel (**Websites → Node.js / Web Apps → Create application**), deploy from your Git
+repository (or upload a `.zip` with `package.json` at its root) and set:
 
-1. Set the **Application root** to the uploaded project directory and the
-   **Application startup file** to `server.js`.
-2. Upload the project (or connect the Git repository), then run **NPM Install**.
-3. Build the static assets once: from the **Run JS script** / SSH terminal run
-   `npm run build` (this needs the dev dependencies; alternatively build locally or in CI
-   and upload the resulting `dist/` folder alongside `server.js`).
-4. Start the application. The server listens on the `PORT` provided by Hostinger
-   (defaulting to `3000` locally) and binds to `0.0.0.0`.
+| Field | Value |
+|-------|-------|
+| Framework | **Vite** |
+| Node.js version | `20.x` (or newer) |
+| Build command | `npm run build` |
+| Output directory | `dist` |
 
-The server exposes a `/health` endpoint, serves `/auth-callback` for OIDC logins, and
-falls back to `index.html` for client-side routes. See [📄 Hostinger / Node.js hosting](./docs/hostinger.md)
-for the full walkthrough.
+If you hit **"Unsupported framework or invalid project structure"**, select the framework
+manually as **Vite** (or **Other** with output directory `dist`) instead of relying on
+auto-detection. See [📄 Hostinger / Node.js Web App](./docs/hostinger.md) for the full
+walkthrough and troubleshooting.
 
 ### 🛤️ Serving Ketesa under a custom path
 
