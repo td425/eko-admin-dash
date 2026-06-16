@@ -1,5 +1,6 @@
 import TranslateIcon from "@mui/icons-material/Translate";
-import { Avatar, Box, Card, CircularProgress, MenuItem, Select } from "@mui/material";
+import { Box, Card, CircularProgress, MenuItem, Select } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import {
   Form,
@@ -20,6 +21,7 @@ import { LoginButtons } from "../components/login/LoginButtons";
 import { LoginFormSections } from "../components/login/LoginFormSections";
 import { LoginMethod } from "../components/login/types";
 import { useLoginProbe } from "../components/login/useLoginProbe";
+import { darkTheme } from "../assets/theme";
 import createLogger from "../utils/logger";
 
 const log = createLogger("login");
@@ -157,8 +159,8 @@ const LoginPage = () => {
   };
 
   const icfg = useInstanceConfig();
-  let welcomeTo = "Ketesa";
-  let logoUrl = "./images/logo.webp";
+  let welcomeTo = "EKO";
+  let logoUrl = "https://admin.eko.bz/images/eko-logo.png";
   let backgroundUrl = "";
   if (icfg.name) {
     welcomeTo = icfg.name;
@@ -171,96 +173,98 @@ const LoginPage = () => {
   }
 
   return (
-    <Form defaultValues={{ base_url: base_url }} onSubmit={handleSubmit} mode="onBlur">
-      <LoginFormBox backgroundUrl={backgroundUrl}>
-        {!backgroundUrl && (
-          <>
-            <div className="login-orb login-orb-1" />
-            <div className="login-orb login-orb-2" />
-            <div className="login-orb login-orb-3" />
-          </>
-        )}
-        <Card className="card">
-          <Box className="avatar">
-            {loading ? (
-              <CircularProgress size={80} thickness={3} />
-            ) : (
-              <Avatar sx={{ width: { xs: "80px", sm: "120px" }, height: { xs: "80px", sm: "120px" } }} src={logoUrl} />
-            )}
-          </Box>
-          <Box className="hint">{translate("ketesa.auth.welcome", { name: welcomeTo })}</Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              color: "text.secondary",
-              fontSize: "0.85rem",
-              mt: -1,
-              mb: 1.5,
-              px: 2,
-              textAlign: "center",
-            }}
-          >
-            {translate("ketesa.auth.description")}
-          </Box>
-          <Box className="form">
-            <FormDataConsumer>
-              {({ formData }) => (
-                <LoginFormSections
-                  formData={formData}
-                  probeState={probeState}
-                  loginMethod={loginMethod}
-                  setLoginMethod={setLoginMethod}
-                  loading={loading}
-                  restrictBaseUrlSingle={restrictBaseUrlSingle}
-                  restrictBaseUrlMultiple={restrictBaseUrlMultiple}
-                  baseUrlChoices={baseUrlChoices}
-                  start={start}
-                />
+    <ThemeProvider theme={darkTheme}>
+      <Form defaultValues={{ base_url: base_url }} onSubmit={handleSubmit} mode="onBlur">
+        <LoginFormBox backgroundUrl={backgroundUrl}>
+          {!backgroundUrl && (
+            <>
+              <div className="login-orb login-orb-1" />
+              <div className="login-orb login-orb-2" />
+              <div className="login-orb login-orb-3" />
+            </>
+          )}
+          <Card className="card">
+            <Box className="avatar">
+              {loading ? (
+                <CircularProgress size={64} thickness={3} sx={{ color: "#FF7A1A" }} />
+              ) : (
+                <Box component="img" src={logoUrl} alt={welcomeTo} className="login-logo" />
               )}
-            </FormDataConsumer>
-            <LoginButtons probeState={probeState} loginMethod={loginMethod} loading={loading} />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 0.5,
-              pb: 2,
-              opacity: 0.6,
-              "&:hover": { opacity: 0.85 },
-              transition: "opacity 150ms ease",
-            }}
-          >
-            <TranslateIcon sx={{ fontSize: "0.95rem", color: "text.secondary" }} />
-            <Select
-              variant="standard"
-              value={locale}
-              onChange={e => setLocale(e.target.value)}
-              disabled={loading}
-              disableUnderline
+            </Box>
+            <Box className="hint">{translate("ketesa.auth.welcome", { name: welcomeTo })}</Box>
+            <Box
               sx={{
-                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
                 color: "text.secondary",
-                "& .MuiSelect-select": { py: 0 },
-                "& .MuiSvgIcon-root": { color: "text.secondary", fontSize: "1rem" },
+                fontSize: "0.85rem",
+                mt: -1,
+                mb: 1.5,
+                px: 2,
+                textAlign: "center",
               }}
             >
-              {locales.map(l => (
-                <MenuItem key={l.locale} value={l.locale} dense>
-                  {l.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
-        </Card>
-      </LoginFormBox>
-      <Notification />
-      <EtkeAttribution>
-        <Footer />
-      </EtkeAttribution>
-    </Form>
+              {translate("ketesa.auth.description")}
+            </Box>
+            <Box className="form">
+              <FormDataConsumer>
+                {({ formData }) => (
+                  <LoginFormSections
+                    formData={formData}
+                    probeState={probeState}
+                    loginMethod={loginMethod}
+                    setLoginMethod={setLoginMethod}
+                    loading={loading}
+                    restrictBaseUrlSingle={restrictBaseUrlSingle}
+                    restrictBaseUrlMultiple={restrictBaseUrlMultiple}
+                    baseUrlChoices={baseUrlChoices}
+                    start={start}
+                  />
+                )}
+              </FormDataConsumer>
+              <LoginButtons probeState={probeState} loginMethod={loginMethod} loading={loading} />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 0.5,
+                pb: 2,
+                opacity: 0.6,
+                "&:hover": { opacity: 0.85 },
+                transition: "opacity 150ms ease",
+              }}
+            >
+              <TranslateIcon sx={{ fontSize: "0.95rem", color: "text.secondary" }} />
+              <Select
+                variant="standard"
+                value={locale}
+                onChange={e => setLocale(e.target.value)}
+                disabled={loading}
+                disableUnderline
+                sx={{
+                  fontSize: "0.8rem",
+                  color: "text.secondary",
+                  "& .MuiSelect-select": { py: 0 },
+                  "& .MuiSvgIcon-root": { color: "text.secondary", fontSize: "1rem" },
+                }}
+              >
+                {locales.map(l => (
+                  <MenuItem key={l.locale} value={l.locale} dense>
+                    {l.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          </Card>
+        </LoginFormBox>
+        <Notification />
+        <EtkeAttribution>
+          <Footer />
+        </EtkeAttribution>
+      </Form>
+    </ThemeProvider>
   );
 };
 
